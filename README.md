@@ -4,9 +4,9 @@
 </h1>
 
 <p align="center">
-    <a href="#introducao">Introdução</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href="#introdução">Introdução</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     <a href="#tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    <a href="#testando-a-aplicacao">Testando a aplicação</a>
+    <a href="#testando-a-aplicação">Testando a aplicação</a>
 </p>
 
 ### Introdução
