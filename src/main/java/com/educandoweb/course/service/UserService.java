@@ -4,7 +4,6 @@ import com.educandoweb.course.entity.User;
 import com.educandoweb.course.repository.UserRepository;
 import com.educandoweb.course.service.exception.DatabaseException;
 import com.educandoweb.course.service.exception.ResourceNotFoundException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -45,7 +44,7 @@ public class UserService {
 
     public User update(Long id, User user) {
         try {
-            User entity = userRepository.getOne(id); // prepara o objeto monitorado
+            User entity = userRepository.getOne(id);
             updateData(entity, user);
             return userRepository.save(entity);
         } catch (EntityNotFoundException exception) {
