@@ -13,38 +13,30 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<StandardError> handleResourceNotFound(
-            ResourceNotFoundException exception, HttpServletRequest request) {
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<StandardError> handleResourceNotFound(ResourceNotFoundException exception,
+			HttpServletRequest request) {
 
-        String error = "resource not found";
-        HttpStatus status = HttpStatus.NOT_FOUND;
+		String error = "resource not found";
+		HttpStatus status = HttpStatus.NOT_FOUND;
 
-        StandardError standardError = new StandardError(
-                Instant.now(),
-                status.value(),
-                error,
-                exception.getMessage(),
-                request.getRequestURI());
+		StandardError standardError = new StandardError(Instant.now(), status.value(), error, exception.getMessage(),
+				request.getRequestURI());
 
-        return ResponseEntity.status(status).body(standardError);
-    }
+		return ResponseEntity.status(status).body(standardError);
+	}
 
-    @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<StandardError> handleDatabaseException(
-            DatabaseException exception, HttpServletRequest request) {
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardError> handleDatabaseException(DatabaseException exception,
+			HttpServletRequest request) {
 
-        String error = "database error";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+		String error = "database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-        StandardError standardError = new StandardError(
-                Instant.now(),
-                status.value(),
-                error,
-                exception.getMessage(),
-                request.getRequestURI());
+		StandardError standardError = new StandardError(Instant.now(), status.value(), error, exception.getMessage(),
+				request.getRequestURI());
 
-        return ResponseEntity.status(status).body(standardError);
-    }
+		return ResponseEntity.status(status).body(standardError);
+	}
 
 }

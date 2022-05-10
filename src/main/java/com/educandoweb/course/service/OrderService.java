@@ -12,16 +12,16 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+	@Autowired
+	private OrderRepository orderRepository;
 
-    public List<Order> findAll() {
-        return orderRepository.findAll();
-    }
+	public List<Order> findAll() {
+		return orderRepository.findAll();
+	}
 
-    public Order findById(Long id) {
-        Optional<Order> order = orderRepository.findById(id);
-        return order.orElseThrow(() -> new ResourceNotFoundException(id));
-    }
+	public Order findById(Long id) {
+		Optional<Order> order = orderRepository.findById(id);
+		return order.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
 
 }

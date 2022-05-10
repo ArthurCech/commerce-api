@@ -15,19 +15,19 @@ import java.util.List;
 @RequestMapping(value = "/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+	@Autowired
+	private ProductService productService;
 
-    @GetMapping
-    public ResponseEntity<List<Product>> findAll() {
-        List<Product> products = productService.findAll();
-        return ResponseEntity.ok().body(products);
-    }
+	@GetMapping
+	public ResponseEntity<List<Product>> findAll() {
+		List<Product> products = productService.findAll();
+		return ResponseEntity.ok().body(products);
+	}
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id) {
-        Product product = productService.findById(id);
-        return ResponseEntity.ok().body(product);
-    }
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Product> findById(@PathVariable Long id) {
+		Product product = productService.findById(id);
+		return ResponseEntity.ok().body(product);
+	}
 
 }

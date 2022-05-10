@@ -12,16 +12,16 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
-    }
+	public List<Category> findAll() {
+		return categoryRepository.findAll();
+	}
 
-    public Category findById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.orElseThrow(() -> new ResourceNotFoundException(id));
-    }
+	public Category findById(Long id) {
+		Optional<Category> category = categoryRepository.findById(id);
+		return category.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
 
 }
