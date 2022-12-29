@@ -1,9 +1,9 @@
 package io.github.arthurcech.orderscrudcommerce.controller.exception;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.time.Instant;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class StandardError implements Serializable {
 
@@ -11,7 +11,6 @@ public class StandardError implements Serializable {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant timestamp;
-
 	private Integer status;
 	private String error;
 	private String message;
