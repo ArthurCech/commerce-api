@@ -1,51 +1,48 @@
-package io.github.arthurcech.orderscrudcommerce.entity;
+package io.github.arthurcech.orderscrudcommerce.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.arthurcech.orderscrudcommerce.entity.User;
 
-@Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(nullable = false)
+	@NotBlank(message = "Campo name obrigatório")
+	@Size(min = 2, max = 255, message = "O campo name deve ter no mínimo 2 e no máximo 255 caracteres")
 	private String name;
-	@Column(nullable = false)
+	@NotBlank(message = "Campo email obrigatório")
+	@Email
 	private String email;
-	@Column(nullable = false)
+	@NotBlank(message = "Campo phone obrigatório")
 	private String phone;
-	@Column(nullable = false)
+	@NotBlank(message = "Campo password obrigatório")
+	@Size(max = 16, message = "O campo senha deve ter no máximo 16 caracteres")
 	private String password;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "client")
-	private List<Order> orders = new ArrayList<>();
-
-	public User() {
+	public UserDTO() {
 	}
 
-	public User(Long id, String name, String email, String phone, String password) {
+	public UserDTO(Long id, String name, String email, String phone, String password) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
 		this.password = password;
+	}
+
+	public UserDTO(User user) {
+		this.id = user.getId();
+		this.name = user.getName();
+		this.email = user.getEmail();
+		this.phone = user.getPhone();
+		this.password = user.getPassword();
 	}
 
 	public Long getId() {
@@ -88,10 +85,6 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -105,7 +98,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserDTO other = (UserDTO) obj;
 		return Objects.equals(id, other.id);
 	}
 
