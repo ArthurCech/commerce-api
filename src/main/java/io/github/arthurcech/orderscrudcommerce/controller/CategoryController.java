@@ -1,10 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import java.net.URI;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
+import io.github.arthurcech.orderscrudcommerce.service.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,43 +16,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import io.github.arthurcech.orderscrudcommerce.dto.CategoryDTO;
-import io.github.arthurcech.orderscrudcommerce.service.CategoryService;
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/categories")
+@RequestMapping(value = "/api/categories")
 public class CategoryController {
 
-	@Autowired
-	private CategoryService service;
+    private final CategoryService service;
 
-	@GetMapping
-	public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok().body(service.findAll(pageable));
-	}
+    public CategoryController(CategoryService service) {
+        this.service = service;
+    }
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(service.findById(id));
-	}
+    @GetMapping
+    public ResponseEntity<Page<CategoryResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(service.findAll(pageable));
+    }
 
-	@PostMapping
-	public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO dto) {
-		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
-	}
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<CategoryResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.findById(id));
+    }
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    @PostMapping
+    public ResponseEntity<CategoryResponse> insert(@RequestBody @Valid CategoryPayload payload) {
+        CategoryResponse response = service.insert(payload);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(uri).body(response);
+    }
 
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
-		dto = service.update(id, dto);
-		return ResponseEntity.ok().body(dto);
-	}
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CategoryResponse> update(@PathVariable Long id,
+                                                   @RequestBody @Valid CategoryPayload payload) {
+        CategoryResponse response = service.update(id, payload);
+        return ResponseEntity.ok().body(response);
+    }
 
 }

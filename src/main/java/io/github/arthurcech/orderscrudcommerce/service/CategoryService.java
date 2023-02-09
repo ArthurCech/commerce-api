@@ -1,66 +1,70 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import javax.persistence.EntityNotFoundException;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
+import io.github.arthurcech.orderscrudcommerce.entity.Category;
+import io.github.arthurcech.orderscrudcommerce.mapper.CategoryMapper;
+import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
+import io.github.arthurcech.orderscrudcommerce.service.exception.DatabaseException;
+import io.github.arthurcech.orderscrudcommerce.service.exception.DomainNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import io.github.arthurcech.orderscrudcommerce.dto.CategoryDTO;
-import io.github.arthurcech.orderscrudcommerce.entity.Category;
-import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
-import io.github.arthurcech.orderscrudcommerce.service.exception.DatabaseException;
-import io.github.arthurcech.orderscrudcommerce.service.exception.ResourceNotFoundException;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
 
-	@Autowired
-	private CategoryRepository repository;
+    private final CategoryRepository repository;
 
-	public Page<CategoryDTO> findAll(Pageable pageable) {
-		Page<Category> categories = repository.findAll(pageable);
-		return categories.map(category -> new CategoryDTO(category));
-	}
+    public CategoryService(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
-	public CategoryDTO findById(Long id) {
-		Category category = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new CategoryDTO(category);
-	}
+    @Transactional(readOnly = true)
+    public Page<CategoryResponse> findAll(Pageable pageable) {
+        Page<Category> categories = repository.findAll(pageable);
+        return categories.map(CategoryMapper.INSTANCE::toCategoryResponse);
+    }
 
-	public CategoryDTO insert(CategoryDTO dto) {
-		Category category = new Category();
-		dtoToCategory(dto, category);
-		category = repository.save(category);
-		return new CategoryDTO(category);
-	}
+    @Transactional(readOnly = true)
+    public CategoryResponse findById(Long id) {
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new DomainNotFoundException("Category not found"));
+        return CategoryMapper.INSTANCE.toCategoryResponse(category);
+    }
 
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+    @Transactional
+    public CategoryResponse insert(CategoryPayload payload) {
+        Category category = CategoryMapper.INSTANCE.toCategory(payload);
+        category = repository.save(category);
+        return CategoryMapper.INSTANCE.toCategoryResponse(category);
+    }
 
-	public CategoryDTO update(Long id, CategoryDTO dto) {
-		try {
-			Category category = repository.getById(id);
-			dtoToCategory(dto, category);
-			category = repository.save(category);
-			return new CategoryDTO(category);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
+    public void delete(Long id) {
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new DomainNotFoundException("Category not found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
-	private void dtoToCategory(CategoryDTO dto, Category category) {
-		category.setName(dto.getName());
-	}
+    @Transactional
+    public CategoryResponse update(Long id, CategoryPayload payload) {
+        try {
+            Category category = repository.getById(id);
+            CategoryMapper.INSTANCE.updateCategoryFromPayload(payload, category);
+            Category updatedCategory = repository.save(category);
+            return CategoryMapper.INSTANCE.toCategoryResponse(updatedCategory);
+        } catch (EntityNotFoundException e) {
+            throw new DomainNotFoundException("Category not found");
+        }
+    }
 
 }
