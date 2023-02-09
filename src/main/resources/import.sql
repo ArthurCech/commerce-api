@@ -1,6 +1,6 @@
-INSERT INTO tb_category (name) VALUES ('Electronics');
-INSERT INTO tb_category (name) VALUES ('Books');
-INSERT INTO tb_category (name) VALUES ('Computers');
+INSERT INTO tb_category (name, created_at) VALUES ('Electronics', NOW());
+INSERT INTO tb_category (name, created_at) VALUES ('Books', NOW());
+INSERT INTO tb_category (name, created_at) VALUES ('Computers', NOW());
 
 INSERT INTO tb_product (name, description, img_url, price) VALUES ('The Lord of the Rings', 'Lorem ipsum dolor sit amet, consectetur.', 'shorturl.at/alE28', 90.5);
 INSERT INTO tb_product (name, description, img_url, price) VALUES ('Smart TV', 'Nulla eu imperdiet purus. Maecenas ante.', 'shorturl.at/alE28', 2190.0);
@@ -14,3 +14,6 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES (2, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (3, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (4, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (5, 2);
+
+INSERT INTO tb_user (name, email, phone, password) VALUES ('Maria Brown', 'maria.brown@gmail.com', '988888888', '123456');
+INSERT INTO tb_user (name, email, phone, password) VALUES ('Alex Green', 'alex.green@gmail.com', '977777777', '123456');
