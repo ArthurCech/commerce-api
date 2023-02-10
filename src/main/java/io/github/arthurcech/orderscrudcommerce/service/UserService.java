@@ -1,69 +1,70 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import javax.persistence.EntityNotFoundException;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UserCreatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
+import io.github.arthurcech.orderscrudcommerce.entity.User;
+import io.github.arthurcech.orderscrudcommerce.mapper.UserMapper;
+import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
+import io.github.arthurcech.orderscrudcommerce.service.exception.DatabaseException;
+import io.github.arthurcech.orderscrudcommerce.service.exception.DomainNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import io.github.arthurcech.orderscrudcommerce.dto.UserDTO;
-import io.github.arthurcech.orderscrudcommerce.entity.User;
-import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
-import io.github.arthurcech.orderscrudcommerce.service.exception.DatabaseException;
-import io.github.arthurcech.orderscrudcommerce.service.exception.ResourceNotFoundException;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
 
-	@Autowired
-	private UserRepository repository;
+    private final UserRepository repository;
 
-	public Page<UserDTO> findAll(Pageable pageable) {
-		Page<User> users = repository.findAll(pageable);
-		return users.map(user -> new UserDTO(user));
-	}
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
-	public UserDTO findById(Long id) {
-		User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new UserDTO(user);
-	}
+    @Transactional(readOnly = true)
+    public Page<UserResponse> findAll(Pageable pageable) {
+        Page<User> users = repository.findAll(pageable);
+        return users.map(UserMapper.INSTANCE::toUserResponse);
+    }
 
-	public UserDTO insert(UserDTO dto) {
-		User user = new User();
-		dtoToUser(dto, user);
-		user = repository.save(user);
-		return new UserDTO(user);
-	}
+    @Transactional(readOnly = true)
+    public UserResponse findById(Long id) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new DomainNotFoundException("User not found"));
+        return UserMapper.INSTANCE.toUserResponse(user);
+    }
 
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+    @Transactional
+    public UserResponse insert(UserCreatePayload payload) {
+        User user = repository.save(UserMapper.INSTANCE.toUser(payload));
+        return UserMapper.INSTANCE.toUserResponse(user);
+    }
 
-	public UserDTO update(Long id, UserDTO dto) {
-		try {
-			User user = repository.getById(id);
-			dtoToUser(dto, user);
-			user = repository.save(user);
-			return new UserDTO(user);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
+    public void delete(Long id) {
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new DomainNotFoundException("User not found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
-	private void dtoToUser(UserDTO dto, User user) {
-		user.setName(dto.getName());
-		user.setEmail(dto.getEmail());
-		user.setPhone(dto.getPhone());
-		user.setPassword(dto.getPassword());
-	}
+    @Transactional
+    public UserResponse update(Long id, UserUpdatePayload payload) {
+        try {
+            User user = repository.getById(id);
+            UserMapper.INSTANCE.updateUserFromPayload(payload, user);
+            user = repository.save(user);
+            return UserMapper.INSTANCE.toUserResponse(user);
+        } catch (EntityNotFoundException e) {
+            throw new DomainNotFoundException("User not found");
+        }
+    }
 
 }

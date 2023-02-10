@@ -1,10 +1,9 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import java.net.URI;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UserCreatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
+import io.github.arthurcech.orderscrudcommerce.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,43 +17,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import io.github.arthurcech.orderscrudcommerce.dto.UserDTO;
-import io.github.arthurcech.orderscrudcommerce.service.UserService;
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/users")
 public class UserController {
 
-	@Autowired
-	private UserService service;
+    private final UserService service;
 
-	@GetMapping
-	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok().body(service.findAll(pageable));
-	}
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(service.findById(id));
-	}
+    @GetMapping
+    public ResponseEntity<Page<UserResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(service.findAll(pageable));
+    }
 
-	@PostMapping
-	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO dto) {
-		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
-	}
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.findById(id));
+    }
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    @PostMapping
+    public ResponseEntity<UserResponse> insert(@RequestBody @Valid UserCreatePayload payload) {
+        UserResponse response = service.insert(payload);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(uri).body(response);
+    }
 
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
-		dto = service.update(id, dto);
-		return ResponseEntity.ok().body(dto);
-	}
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserResponse> update(@PathVariable Long id,
+                                               @RequestBody @Valid UserUpdatePayload payload) {
+        UserResponse response = service.update(id, payload);
+        return ResponseEntity.ok().body(response);
+    }
 
 }

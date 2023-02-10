@@ -15,5 +15,5 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES (3, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (4, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (5, 2);
 
-INSERT INTO tb_user (name, email, phone, password) VALUES ('Maria Brown', 'maria.brown@gmail.com', '988888888', '123456');
-INSERT INTO tb_user (name, email, phone, password) VALUES ('Alex Green', 'alex.green@gmail.com', '977777777', '123456');
+INSERT INTO tb_user (name, email, phone, password, created_at, updated_at) VALUES ('Maria Brown', 'maria.brown@gmail.com', '988888888', '123456', NOW(), NOW());
+INSERT INTO tb_user (name, email, phone, password, created_at, updated_at) VALUES ('Alex Green', 'alex.green@gmail.com', '977777777', '123456', NOW(), NOW());
