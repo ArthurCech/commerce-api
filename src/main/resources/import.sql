@@ -1,6 +1,6 @@
-INSERT INTO tb_category (name, created_at) VALUES ('Electronics', NOW());
-INSERT INTO tb_category (name, created_at) VALUES ('Books', NOW());
-INSERT INTO tb_category (name, created_at) VALUES ('Computers', NOW());
+INSERT INTO tb_category (name, created_at, updated_at) VALUES ('Electronics', NOW(), NOW());
+INSERT INTO tb_category (name, created_at, updated_at) VALUES ('Books', NOW(), NOW());
+INSERT INTO tb_category (name, created_at, updated_at) VALUES ('Computers', NOW(), NOW());
 
 INSERT INTO tb_product (name, description, img_url, price) VALUES ('The Lord of the Rings', 'Lorem ipsum dolor sit amet, consectetur.', 'shorturl.at/alE28', 90.5);
 INSERT INTO tb_product (name, description, img_url, price) VALUES ('Smart TV', 'Nulla eu imperdiet purus. Maecenas ante.', 'shorturl.at/alE28', 2190.0);

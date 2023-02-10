@@ -1,7 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryCreatePayload;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.Category;
 import io.github.arthurcech.orderscrudcommerce.mapper.CategoryMapper;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
@@ -39,7 +40,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryResponse insert(CategoryPayload payload) {
+    public CategoryResponse insert(CategoryCreatePayload payload) {
         Category category = CategoryMapper.INSTANCE.toCategory(payload);
         category = repository.save(category);
         return CategoryMapper.INSTANCE.toCategoryResponse(category);
@@ -56,12 +57,12 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryResponse update(Long id, CategoryPayload payload) {
+    public CategoryResponse update(Long id, CategoryUpdatePayload payload) {
         try {
             Category category = repository.getById(id);
             CategoryMapper.INSTANCE.updateCategoryFromPayload(payload, category);
-            Category updatedCategory = repository.save(category);
-            return CategoryMapper.INSTANCE.toCategoryResponse(updatedCategory);
+            category = repository.save(category);
+            return CategoryMapper.INSTANCE.toCategoryResponse(category);
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException("Category not found");
         }

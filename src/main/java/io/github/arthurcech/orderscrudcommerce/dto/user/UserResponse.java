@@ -1,5 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.Instant;
@@ -11,7 +12,7 @@ public record UserResponse(
         String email,
         String phone,
         String password,
-        Instant createdAt,
-        Instant updatedAt
+        @JsonProperty("created_at") Instant createdAt,
+        @JsonProperty("updated_at") Instant updatedAt
 ) {
 }

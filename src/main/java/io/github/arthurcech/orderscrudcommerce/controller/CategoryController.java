@@ -1,7 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryCreatePayload;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.service.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> insert(@RequestBody @Valid CategoryPayload payload) {
+    public ResponseEntity<CategoryResponse> insert(@RequestBody @Valid CategoryCreatePayload payload) {
         CategoryResponse response = service.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.id()).toUri();
@@ -55,7 +56,7 @@ public class CategoryController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<CategoryResponse> update(@PathVariable Long id,
-                                                   @RequestBody @Valid CategoryPayload payload) {
+                                                   @RequestBody @Valid CategoryUpdatePayload payload) {
         CategoryResponse response = service.update(id, payload);
         return ResponseEntity.ok().body(response);
     }

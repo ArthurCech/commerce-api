@@ -1,6 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
@@ -26,11 +26,13 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @CreationTimestamp
     private Instant createdAt;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @UpdateTimestamp
     private Instant updatedAt;
 
     @JsonIgnore
@@ -41,12 +43,6 @@ public class Category implements Serializable {
     }
 
     public Category(Long id,
-                    String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Category(Long id,
                     String name,
                     Instant createdAt,
                     Instant updatedAt) {
@@ -54,16 +50,6 @@ public class Category implements Serializable {
         this.name = name;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = Instant.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = Instant.now();
     }
 
     public Long getId() {
