@@ -1,28 +1,35 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import io.github.arthurcech.orderscrudcommerce.dto.order.OrderResponse;
 import io.github.arthurcech.orderscrudcommerce.entity.Order;
+import io.github.arthurcech.orderscrudcommerce.mapper.OrderMapper;
 import io.github.arthurcech.orderscrudcommerce.repository.OrderRepository;
-import io.github.arthurcech.orderscrudcommerce.service.exception.ResourceNotFoundException;
+import io.github.arthurcech.orderscrudcommerce.service.exception.DomainNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class OrderService {
 
-	@Autowired
-	private OrderRepository repository;
+    private final OrderRepository repository;
 
-	public List<Order> findAll() {
-		return repository.findAll();
-	}
+    public OrderService(OrderRepository repository) {
+        this.repository = repository;
+    }
 
-	public Order findById(Long id) {
-		Optional<Order> order = repository.findById(id);
-		return order.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
+    @Transactional(readOnly = true)
+    public List<OrderResponse> findAll() {
+        List<Order> list = repository.findAll();
+        return list.stream().map(OrderMapper.INSTANCE::toOrderResponse).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponse findById(Long id) {
+        Order order = repository.findById(id)
+                .orElseThrow(() -> new DomainNotFoundException("Order not found"));
+        return OrderMapper.INSTANCE.toOrderResponse(order);
+    }
 
 }

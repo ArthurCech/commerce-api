@@ -17,3 +17,14 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES (5, 2);
 
 INSERT INTO tb_user (name, email, phone, password, created_at, updated_at) VALUES ('Maria Brown', 'maria.brown@gmail.com', '988888888', '123456', NOW(), NOW());
 INSERT INTO tb_user (name, email, phone, password, created_at, updated_at) VALUES ('Alex Green', 'alex.green@gmail.com', '977777777', '123456', NOW(), NOW());
+
+INSERT INTO tb_order (moment, order_status, created_at, updated_at, client_id) VALUES ('2019-06-20T19:53:07Z', 2, NOW(), NOW(), 1);
+INSERT INTO tb_order (moment, order_status, created_at, updated_at, client_id) VALUES ('2019-07-21T03:42:10Z', 1, NOW(), NOW(), 2);
+INSERT INTO tb_order (moment, order_status, created_at, updated_at, client_id) VALUES ('2019-07-22T15:21:22Z', 1, NOW(), NOW(), 1);
+
+INSERT INTO tb_order_item (product_id, order_id, price, quantity, created_at, updated_at) VALUES (1, 1, 90.5, 2, NOW(), NOW());
+INSERT INTO tb_order_item (product_id, order_id, price, quantity, created_at, updated_at) VALUES (3, 1, 1250.0, 1, NOW(), NOW());
+INSERT INTO tb_order_item (product_id, order_id, price, quantity, created_at, updated_at) VALUES (3, 2, 1250.0, 2, NOW(), NOW());
+INSERT INTO tb_order_item (product_id, order_id, price, quantity, created_at, updated_at) VALUES (5, 3, 100.99, 2, NOW(), NOW());
+
+INSERT INTO tb_payment (moment, order_id, created_at, updated_at) VALUES ('2019-06-20T21:53:07Z', 1, NOW(), NOW());

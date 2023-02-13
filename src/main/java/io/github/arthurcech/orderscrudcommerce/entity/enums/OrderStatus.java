@@ -2,11 +2,15 @@ package io.github.arthurcech.orderscrudcommerce.entity.enums;
 
 public enum OrderStatus {
 
-	WAITING_PAYMENT(1), PAID(2), SHIPPED(3), DELIVERED(4), CANCELED(5);
+	WAITING_PAYMENT(1),
+	PAID(2),
+	SHIPPED(3),
+	DELIVERED(4),
+	CANCELED(5);
 
 	private final int code;
 
-	private OrderStatus(int code) {
+	OrderStatus(int code) {
 		this.code = code;
 	}
 

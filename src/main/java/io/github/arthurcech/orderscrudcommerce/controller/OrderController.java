@@ -1,32 +1,32 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import io.github.arthurcech.orderscrudcommerce.dto.order.OrderResponse;
+import io.github.arthurcech.orderscrudcommerce.service.OrderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.arthurcech.orderscrudcommerce.entity.Order;
-import io.github.arthurcech.orderscrudcommerce.service.OrderService;
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "/api/orders")
 public class OrderController {
 
-	@Autowired
-	private OrderService service;
+    private final OrderService service;
 
-	@GetMapping
-	public ResponseEntity<List<Order>> findAll() {
-		return ResponseEntity.ok().body(service.findAll());
-	}
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Order> findById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(service.findById(id));
-	}
+    @GetMapping
+    public List<OrderResponse> findAll() {
+        return service.findAll();
+    }
+
+    @GetMapping(value = "/{id}")
+    public OrderResponse findById(@PathVariable Long id) {
+        return service.findById(id);
+    }
 
 }
