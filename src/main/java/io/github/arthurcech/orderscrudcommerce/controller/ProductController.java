@@ -23,25 +23,25 @@ import java.net.URI;
 @RequestMapping(value = "/api/products")
 public class ProductController {
 
-    private final ProductService service;
+    private final ProductService productService;
 
-    public ProductController(ProductService service) {
-        this.service = service;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse>> findAll(Pageable pageable) {
-        return ResponseEntity.ok().body(service.findAll(pageable));
+    public Page<ProductResponse> findAll(Pageable pageable) {
+        return productService.findAll(pageable);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ProductResponse findById(@PathVariable Long id) {
+        return productService.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<ProductResponse> insert(@RequestBody @Valid ProductPayload payload) {
-        ProductResponse response = service.insert(payload);
+        ProductResponse response = productService.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
@@ -49,15 +49,14 @@ public class ProductController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        productService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductResponse> update(@PathVariable Long id,
-                                                  @RequestBody @Valid ProductPayload payload) {
-        ProductResponse response = service.update(id, payload);
-        return ResponseEntity.ok(response);
+    public ProductResponse update(@PathVariable Long id,
+                                  @RequestBody @Valid ProductPayload payload) {
+        return productService.update(id, payload);
     }
 
 }
