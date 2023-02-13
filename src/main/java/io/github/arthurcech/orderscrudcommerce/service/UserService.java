@@ -20,34 +20,34 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepository repository) {
-        this.repository = repository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Transactional(readOnly = true)
     public Page<UserResponse> findAll(Pageable pageable) {
-        Page<User> users = repository.findAll(pageable);
+        Page<User> users = userRepository.findAll(pageable);
         return users.map(UserMapper.INSTANCE::toUserResponse);
     }
 
     @Transactional(readOnly = true)
     public UserResponse findById(Long id) {
-        User user = repository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new DomainNotFoundException("User not found"));
         return UserMapper.INSTANCE.toUserResponse(user);
     }
 
     @Transactional
     public UserResponse insert(UserCreatePayload payload) {
-        User user = repository.save(UserMapper.INSTANCE.toUser(payload));
+        User user = userRepository.save(UserMapper.INSTANCE.toUser(payload));
         return UserMapper.INSTANCE.toUserResponse(user);
     }
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            userRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new DomainNotFoundException("User not found");
         } catch (DataIntegrityViolationException e) {
@@ -58,9 +58,9 @@ public class UserService {
     @Transactional
     public UserResponse update(Long id, UserUpdatePayload payload) {
         try {
-            User user = repository.getById(id);
+            User user = userRepository.getById(id);
             UserMapper.INSTANCE.updateUserFromPayload(payload, user);
-            user = repository.save(user);
+            user = userRepository.save(user);
             return UserMapper.INSTANCE.toUserResponse(user);
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException("User not found");

@@ -24,25 +24,25 @@ import java.net.URI;
 @RequestMapping(value = "/api/users")
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
 
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserResponse>> findAll(Pageable pageable) {
-        return ResponseEntity.ok().body(service.findAll(pageable));
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userService.findAll(pageable);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public UserResponse findById(@PathVariable Long id) {
+        return userService.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> insert(@RequestBody @Valid UserCreatePayload payload) {
-        UserResponse response = service.insert(payload);
+        UserResponse response = userService.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
@@ -50,15 +50,14 @@ public class UserController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable Long id,
-                                               @RequestBody @Valid UserUpdatePayload payload) {
-        UserResponse response = service.update(id, payload);
-        return ResponseEntity.ok().body(response);
+    public UserResponse update(@PathVariable Long id,
+                               @RequestBody @Valid UserUpdatePayload payload) {
+        return userService.update(id, payload);
     }
 
 }

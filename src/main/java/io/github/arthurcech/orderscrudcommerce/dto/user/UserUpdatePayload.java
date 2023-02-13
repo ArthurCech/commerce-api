@@ -1,20 +1,23 @@
 package io.github.arthurcech.orderscrudcommerce.dto.user;
 
+import io.github.arthurcech.orderscrudcommerce.service.validation.UserUpdateValid;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@UserUpdateValid
 public record UserUpdatePayload(
-        @NotBlank(message = "Campo name obrigatório")
-        @Size(min = 2, max = 255, message = "O campo name deve ter no mínimo 2 e no máximo 255 caracteres")
+        @NotBlank(message = "Required field")
+        @Size(min = 2, max = 255, message = "The field must have a minimum of 2 and a maximum of 255 characters")
         String name,
-        @NotBlank(message = "Campo email obrigatório")
+        @NotBlank(message = "Required field")
         @Email
         String email,
-        @NotBlank(message = "Campo phone obrigatório")
+        @NotBlank(message = "Required field")
         String phone,
-        @NotBlank(message = "Campo password obrigatório")
-        @Size(max = 16, message = "O campo senha deve ter no máximo 16 caracteres")
+        @NotBlank(message = "Required field")
+        @Size(max = 16, message = "The field must have a maximum of 16 characters")
         String password
 ) {
 }
