@@ -3,7 +3,6 @@ package io.github.arthurcech.orderscrudcommerce.service.validation;
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryCreatePayload;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
-import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -26,7 +25,7 @@ public class CategoryInsertValidator implements ConstraintValidator<CategoryInse
     public boolean isValid(CategoryCreatePayload payload, ConstraintValidatorContext context) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         categoryRepository.findByName(payload.name()).ifPresent(category -> {
-            fieldsMessage.add(new FieldMessage("name", "Category already registered"));
+            fieldsMessage.add(new FieldMessage("name", "Categoria já cadastrada"));
         });
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();

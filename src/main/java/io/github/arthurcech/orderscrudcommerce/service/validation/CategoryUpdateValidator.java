@@ -35,11 +35,10 @@ public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpda
         Map<String, String> uriVars = (Map<String, String>) request
                 .getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         long categoryId = Long.parseLong(uriVars.get("id"));
-
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         Optional<Category> categoryOptional = categoryRepository.findByName(payload.name());
         if (categoryOptional.isPresent() && categoryId != categoryOptional.get().getId()) {
-            fieldsMessage.add(new FieldMessage("name", "Category already registered"));
+            fieldsMessage.add(new FieldMessage("name", "Categoria já cadastrada"));
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
