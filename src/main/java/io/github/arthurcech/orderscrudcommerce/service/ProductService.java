@@ -45,19 +45,23 @@ public class ProductService {
 
     @Transactional
     public ProductResponse insert(ProductPayload payload) {
-        Product product = ProductMapper.INSTANCE.toProduct(payload);
-        product.getCategories().clear();
-        for (ProductCategoryPayload category : payload.categories()) {
-            product.getCategories().add(categoryRepository.getById(category.id()));
+        try {
+            Product product = ProductMapper.INSTANCE.toProduct(payload);
+            product.getCategories().clear();
+            for (ProductCategoryPayload category : payload.categories()) {
+                product.getCategories().add(categoryRepository.getById(category.id()));
+            }
+            product = productRepository.save(product);
+            return ProductMapper.INSTANCE.toProductResponse(product);
+        } catch (EntityNotFoundException e) {
+            throw new DomainNotFoundException("Category not found");
         }
-        product = productRepository.save(product);
-        return ProductMapper.INSTANCE.toProductResponse(product);
     }
 
-	@Transactional
-	public ProductResponse update(Long id, ProductPayload payload) {
-		try {
-			Product product = productRepository.getById(id);
+    @Transactional
+    public ProductResponse update(Long id, ProductPayload payload) {
+        try {
+            Product product = productRepository.getById(id);
             ProductMapper.INSTANCE.updateProductFromPayload(payload, product);
             product.getCategories().clear();
             for (ProductCategoryPayload category : payload.categories()) {
@@ -65,10 +69,10 @@ public class ProductService {
             }
             product = productRepository.save(product);
             return ProductMapper.INSTANCE.toProductResponse(product);
-		} catch (EntityNotFoundException e) {
-			throw new DomainNotFoundException("Product not found");
-		}
-	}
+        } catch (EntityNotFoundException e) {
+            throw new DomainNotFoundException("Product or category not found");
+        }
+    }
 
     public void delete(Long id) {
         try {
