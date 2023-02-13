@@ -25,7 +25,7 @@ public class CategoryInsertValidator implements ConstraintValidator<CategoryInse
     public boolean isValid(CategoryCreatePayload payload, ConstraintValidatorContext context) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         categoryRepository.findByName(payload.name()).ifPresent(category -> {
-            fieldsMessage.add(new FieldMessage("name", "Categoria já cadastrada"));
+            fieldsMessage.add(new FieldMessage("name", "Category already exists"));
         });
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();

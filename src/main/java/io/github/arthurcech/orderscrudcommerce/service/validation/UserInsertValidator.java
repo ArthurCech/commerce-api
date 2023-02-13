@@ -25,7 +25,7 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
     public boolean isValid(UserCreatePayload payload, ConstraintValidatorContext context) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         userRepository.findByEmail(payload.email()).ifPresent(user -> {
-            fieldsMessage.add(new FieldMessage("email", "Usuário já cadastrado"));
+            fieldsMessage.add(new FieldMessage("email", "User already exists"));
         });
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();

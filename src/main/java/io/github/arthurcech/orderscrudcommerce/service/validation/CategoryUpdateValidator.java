@@ -38,7 +38,7 @@ public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpda
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         Optional<Category> categoryOptional = categoryRepository.findByName(payload.name());
         if (categoryOptional.isPresent() && categoryId != categoryOptional.get().getId()) {
-            fieldsMessage.add(new FieldMessage("name", "Categoria já cadastrada"));
+            fieldsMessage.add(new FieldMessage("name", "Category already exists"));
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();

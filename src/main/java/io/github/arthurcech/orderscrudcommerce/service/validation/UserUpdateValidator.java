@@ -39,7 +39,7 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         Optional<User> userOptional = userRepository.findByEmail(payload.email());
         if (userOptional.isPresent() && userId != userOptional.get().getId()) {
-            fieldsMessage.add(new FieldMessage("email", "Usuário já cadastrado"));
+            fieldsMessage.add(new FieldMessage("email", "User already exists"));
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
