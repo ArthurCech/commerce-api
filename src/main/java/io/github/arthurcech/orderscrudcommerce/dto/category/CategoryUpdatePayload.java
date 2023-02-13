@@ -7,8 +7,8 @@ import javax.validation.constraints.Size;
 
 @CategoryUpdateValid
 public record CategoryUpdatePayload(
-        @NotBlank(message = "Campo name obrigatório")
-        @Size(min = 2, max = 255, message = "O campo name deve ter no mínimo 2 e no máximo 255 caracteres")
+        @NotBlank(message = "Required field")
+        @Size(min = 2, max = 255, message = "The field must have a minimum of 2 and a maximum of 255 characters")
         String name
 ) {
 }

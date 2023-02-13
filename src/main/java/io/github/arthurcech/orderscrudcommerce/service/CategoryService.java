@@ -20,21 +20,21 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class CategoryService {
 
-    private final CategoryRepository repository;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository repository) {
-        this.repository = repository;
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Transactional(readOnly = true)
     public Page<CategoryResponse> findAll(Pageable pageable) {
-        Page<Category> categories = repository.findAll(pageable);
+        Page<Category> categories = categoryRepository.findAll(pageable);
         return categories.map(CategoryMapper.INSTANCE::toCategoryResponse);
     }
 
     @Transactional(readOnly = true)
     public CategoryResponse findById(Long id) {
-        Category category = repository.findById(id)
+        Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new DomainNotFoundException("Category not found"));
         return CategoryMapper.INSTANCE.toCategoryResponse(category);
     }
@@ -42,13 +42,13 @@ public class CategoryService {
     @Transactional
     public CategoryResponse insert(CategoryCreatePayload payload) {
         Category category = CategoryMapper.INSTANCE.toCategory(payload);
-        category = repository.save(category);
+        category = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.toCategoryResponse(category);
     }
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            categoryRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new DomainNotFoundException("Category not found");
         } catch (DataIntegrityViolationException e) {
@@ -59,9 +59,9 @@ public class CategoryService {
     @Transactional
     public CategoryResponse update(Long id, CategoryUpdatePayload payload) {
         try {
-            Category category = repository.getById(id);
+            Category category = categoryRepository.getById(id);
             CategoryMapper.INSTANCE.updateCategoryFromPayload(payload, category);
-            category = repository.save(category);
+            category = categoryRepository.save(category);
             return CategoryMapper.INSTANCE.toCategoryResponse(category);
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException("Category not found");

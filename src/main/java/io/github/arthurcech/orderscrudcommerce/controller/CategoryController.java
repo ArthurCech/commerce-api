@@ -24,25 +24,25 @@ import java.net.URI;
 @RequestMapping(value = "/api/categories")
 public class CategoryController {
 
-    private final CategoryService service;
+    private final CategoryService categoryService;
 
-    public CategoryController(CategoryService service) {
-        this.service = service;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<CategoryResponse>> findAll(Pageable pageable) {
-        return ResponseEntity.ok().body(service.findAll(pageable));
+    public Page<CategoryResponse> findAll(Pageable pageable) {
+        return categoryService.findAll(pageable);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CategoryResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public CategoryResponse findById(@PathVariable Long id) {
+        return categoryService.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<CategoryResponse> insert(@RequestBody @Valid CategoryCreatePayload payload) {
-        CategoryResponse response = service.insert(payload);
+        CategoryResponse response = categoryService.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
@@ -50,15 +50,14 @@ public class CategoryController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryResponse> update(@PathVariable Long id,
-                                                   @RequestBody @Valid CategoryUpdatePayload payload) {
-        CategoryResponse response = service.update(id, payload);
-        return ResponseEntity.ok().body(response);
+    public CategoryResponse update(@PathVariable Long id,
+                                   @RequestBody @Valid CategoryUpdatePayload payload) {
+        return categoryService.update(id, payload);
     }
 
 }
