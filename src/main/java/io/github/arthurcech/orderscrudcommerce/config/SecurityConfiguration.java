@@ -20,7 +20,7 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final String[] PROTECTED = {"/api/categories/**", "/api/products/**"};
+    private final String[] PROTECTED = {"/api/categories/**", "/api/products/**", "/api/users/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

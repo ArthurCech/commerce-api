@@ -1,17 +1,14 @@
 package io.github.arthurcech.orderscrudcommerce.dto.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.github.arthurcech.orderscrudcommerce.entity.enums.Role;
 
-import java.time.Instant;
-
-@JsonPropertyOrder({"id", "name", "email", "phone", "password", "createdAt", "updatedAt"})
+@JsonPropertyOrder({"id", "name", "email", "phone", "password", "role"})
 public record UserResponse(
         Long id,
         String name,
         String email,
         String phone,
-        @JsonProperty("created_at") Instant createdAt,
-        @JsonProperty("updated_at") Instant updatedAt
+        Role role
 ) {
 }

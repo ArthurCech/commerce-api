@@ -1,8 +1,10 @@
 package io.github.arthurcech.orderscrudcommerce.dto.user;
 
+import io.github.arthurcech.orderscrudcommerce.entity.enums.Role;
 import io.github.arthurcech.orderscrudcommerce.service.validation.UserUpdateValid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @UserUpdateValid
@@ -17,6 +19,8 @@ public record UserUpdatePayload(
         String phone,
         @NotBlank(message = "Required field")
         @Size(max = 16, message = "The field must have a maximum of 16 characters")
-        String password
+        String password,
+        @NotNull
+        Role role
 ) {
 }

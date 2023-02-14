@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.USER_NOT_FOUND;
+
 @Service
 public class UserService {
 
@@ -33,29 +35,29 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponse findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new DomainNotFoundException("User not found"));
+                .orElseThrow(() -> new DomainNotFoundException(USER_NOT_FOUND));
         return UserMapper.INSTANCE.toUserResponse(user);
+    }
+
+    @Transactional
+    public UserResponse update(Long id, UserUpdatePayload payload) {
+        try {
+            User user = userRepository.getReferenceById(id);
+            UserMapper.INSTANCE.updateUserFromPayload(payload, user);
+            user = userRepository.save(user);
+            return UserMapper.INSTANCE.toUserResponse(user);
+        } catch (EntityNotFoundException e) {
+            throw new DomainNotFoundException(USER_NOT_FOUND);
+        }
     }
 
     public void delete(Long id) {
         try {
             userRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DomainNotFoundException("User not found");
+            throw new DomainNotFoundException(USER_NOT_FOUND);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    @Transactional
-    public UserResponse update(Long id, UserUpdatePayload payload) {
-        try {
-            User user = userRepository.getById(id);
-            UserMapper.INSTANCE.updateUserFromPayload(payload, user);
-            user = userRepository.save(user);
-            return UserMapper.INSTANCE.toUserResponse(user);
-        } catch (EntityNotFoundException e) {
-            throw new DomainNotFoundException("User not found");
         }
     }
 

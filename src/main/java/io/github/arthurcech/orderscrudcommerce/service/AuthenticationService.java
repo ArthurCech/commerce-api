@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.USER_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -35,7 +37,10 @@ public class AuthenticationService {
         user.setRole(Role.ROLE_USER);
         user = userRepository.save(user);
 
-        String jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
+
+        String jwtToken = jwtService.generateToken(claims, user);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("access_token", jwtToken);
 
@@ -53,11 +58,10 @@ public class AuthenticationService {
                 )
         );
         User user = userRepository.findByEmail(payload.email())
-                .orElseThrow(() -> new DomainNotFoundException("User not found"));
+                .orElseThrow(() -> new DomainNotFoundException(USER_NOT_FOUND));
 
-        Map<String, Object> claims = new HashMap<>() {{
-            put("role", user.getRole().name());
-        }};
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
 
         String jwtToken = jwtService.generateToken(claims, user);
         HttpHeaders headers = new HttpHeaders();
