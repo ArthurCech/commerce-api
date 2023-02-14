@@ -20,6 +20,7 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final String[] PROTECTED = {"/api/categories/**", "/api/products/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,9 +29,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers(toH2Console()).permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/api/categories/**").hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, "/api/categories/**").hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.POST, PROTECTED).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, PROTECTED).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, PROTECTED).hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .headers(headers -> headers.frameOptions().sameOrigin())

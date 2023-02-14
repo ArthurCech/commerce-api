@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.CATEGORY_NOT_FOUND;
+
 @Service
 public class CategoryService {
 
@@ -34,7 +36,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryResponse findById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new DomainNotFoundException("Category not found"));
+                .orElseThrow(() -> new DomainNotFoundException(CATEGORY_NOT_FOUND));
         return CategoryMapper.INSTANCE.toCategoryResponse(category);
     }
 
@@ -45,25 +47,25 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toCategoryResponse(category);
     }
 
-    public void delete(Long id) {
-        try {
-            categoryRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new DomainNotFoundException("Category not found");
-        } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
     @Transactional
     public CategoryResponse update(Long id, CategoryUpdatePayload payload) {
         try {
-            Category category = categoryRepository.getById(id);
+            Category category = categoryRepository.getReferenceById(id);
             CategoryMapper.INSTANCE.updateCategoryFromPayload(payload, category);
             category = categoryRepository.save(category);
             return CategoryMapper.INSTANCE.toCategoryResponse(category);
         } catch (EntityNotFoundException e) {
-            throw new DomainNotFoundException("Category not found");
+            throw new DomainNotFoundException(CATEGORY_NOT_FOUND);
+        }
+    }
+
+    public void delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new DomainNotFoundException(CATEGORY_NOT_FOUND);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
         }
     }
 
