@@ -28,3 +28,9 @@ INSERT INTO tb_order_item (product_id, order_id, price, quantity, created_at, up
 INSERT INTO tb_order_item (product_id, order_id, price, quantity, created_at, updated_at) VALUES (5, 3, 100.99, 2, NOW(), NOW());
 
 INSERT INTO tb_payment (moment, order_id, created_at, updated_at) VALUES ('2019-06-20T21:53:07Z', 1, NOW(), NOW());
+
+INSERT INTO tb_client (name, email, phone, created_at, updated_at) VALUES ('Mark Blue', 'mark.blue@gmail.com', '5511985949907', NOW(), NOW());
+INSERT INTO tb_client (name, email, phone, created_at, updated_at) VALUES ('John Green', 'john.green@gmail.com', '5511992475029', NOW(), NOW());
+INSERT INTO tb_client (name, email, phone, created_at, updated_at) VALUES ('Isabella Red', 'isabella.red@gmail.com', '5511996330399', NOW(), NOW());
+INSERT INTO tb_client (name, email, phone, created_at, updated_at) VALUES ('Rose Gray', 'rose.gray@gmail.com', '5511983014960', NOW(), NOW());
+INSERT INTO tb_client (name, email, phone, created_at, updated_at) VALUES ('Effy Brown', 'effy.brown@gmail.com', '5511992351108', NOW(), NOW());
