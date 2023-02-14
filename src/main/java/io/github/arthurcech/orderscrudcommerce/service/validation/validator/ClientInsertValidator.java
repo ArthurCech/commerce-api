@@ -1,8 +1,9 @@
-package io.github.arthurcech.orderscrudcommerce.service.validation;
+package io.github.arthurcech.orderscrudcommerce.service.validation.validator;
 
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
 import io.github.arthurcech.orderscrudcommerce.dto.client.RegisterClientPayload;
 import io.github.arthurcech.orderscrudcommerce.repository.ClientRepository;
+import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.ClientInsertValid;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

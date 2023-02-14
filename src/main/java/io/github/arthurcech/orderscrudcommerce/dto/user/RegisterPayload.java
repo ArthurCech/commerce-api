@@ -1,6 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.dto.user;
 
-import io.github.arthurcech.orderscrudcommerce.service.validation.UserInsertValid;
+import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.UserInsertValid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

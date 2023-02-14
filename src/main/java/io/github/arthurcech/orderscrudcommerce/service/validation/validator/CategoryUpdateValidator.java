@@ -1,9 +1,10 @@
-package io.github.arthurcech.orderscrudcommerce.service.validation;
+package io.github.arthurcech.orderscrudcommerce.service.validation.validator;
 
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.Category;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
+import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.CategoryUpdateValid;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

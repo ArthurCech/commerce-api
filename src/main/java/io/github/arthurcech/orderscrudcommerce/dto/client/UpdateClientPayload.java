@@ -1,6 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.dto.client;
 
-import io.github.arthurcech.orderscrudcommerce.service.validation.ClientUpdateValid;
+import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.ClientUpdateValid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 

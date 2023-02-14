@@ -1,5 +1,6 @@
-package io.github.arthurcech.orderscrudcommerce.service.validation;
+package io.github.arthurcech.orderscrudcommerce.service.validation.annotation;
 
+import io.github.arthurcech.orderscrudcommerce.service.validation.validator.ClientInsertValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -8,10 +9,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = CategoryUpdateValidator.class)
+@Constraint(validatedBy = ClientInsertValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CategoryUpdateValid {
+public @interface ClientInsertValid {
 
     String message() default "Validation error";
 

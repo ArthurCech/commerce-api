@@ -1,6 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.dto.category;
 
-import io.github.arthurcech.orderscrudcommerce.service.validation.CategoryInsertValid;
+import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.CategoryInsertValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
