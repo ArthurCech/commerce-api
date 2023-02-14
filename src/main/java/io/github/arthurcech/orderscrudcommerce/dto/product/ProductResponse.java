@@ -1,5 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
 
@@ -11,7 +12,7 @@ public record ProductResponse(
         String name,
         String description,
         Double price,
-        String imgUrl,
+        @JsonProperty("img_url") String imgUrl,
         List<CategoryResponse> categories
 ) {
 }

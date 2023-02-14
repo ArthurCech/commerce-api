@@ -7,7 +7,7 @@ import io.github.arthurcech.orderscrudcommerce.entity.enums.OrderStatus;
 import java.time.Instant;
 import java.util.Set;
 
-@JsonPropertyOrder({"id", "moment", "orderStatus", "client", "items", "total", "payment", "createdAt", "updatedAt"})
+@JsonPropertyOrder({"id", "moment", "orderStatus", "client", "items", "total", "payment"})
 public record OrderResponse(
         Long id,
         Instant moment,
@@ -15,8 +15,6 @@ public record OrderResponse(
         OrderClientResponse client,
         Set<OrderItemResponse> items,
         Double total,
-        PaymentResponse payment,
-        @JsonProperty("created_at") Instant createdAt,
-        @JsonProperty("updated_at") Instant updatedAt
+        PaymentResponse payment
 ) {
 }

@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.ORDER_NOT_FOUND;
+
 @Service
 public class OrderService {
 
@@ -28,7 +30,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderResponse findById(Long id) {
         Order order = repository.findById(id)
-                .orElseThrow(() -> new DomainNotFoundException("Order not found"));
+                .orElseThrow(() -> new DomainNotFoundException(ORDER_NOT_FOUND));
         return OrderMapper.INSTANCE.toOrderResponse(order);
     }
 
