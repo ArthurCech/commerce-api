@@ -59,9 +59,6 @@ public class User implements Serializable, UserDetails {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Order> orders = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -117,10 +114,6 @@ public class User implements Serializable, UserDetails {
 
     public Instant getUpdatedAt() {
         return updatedAt;
-    }
-
-    public Set<Order> getOrders() {
-        return orders;
     }
 
     @Override

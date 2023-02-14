@@ -5,13 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_client")
@@ -36,6 +39,9 @@ public class Client implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     @UpdateTimestamp
     private Instant updatedAt;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Order> orders = new HashSet<>();
 
     public Client() {
     }
@@ -92,6 +98,10 @@ public class Client implements Serializable {
 
     public Instant getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 
     @Override
