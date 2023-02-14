@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +28,11 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public Map<String, Object> register(RegisterPayload payload) {
         User user = UserMapper.INSTANCE.toUser(payload);
         user.setPassword(passwordEncoder.encode(payload.password()));
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         user = userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
@@ -53,7 +55,11 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(payload.email())
                 .orElseThrow(() -> new DomainNotFoundException("User not found"));
 
-        String jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = new HashMap<>() {{
+            put("role", user.getRole().name());
+        }};
+
+        String jwtToken = jwtService.generateToken(claims, user);
         HttpHeaders headers = new HttpHeaders();
         headers.add("access_token", jwtToken);
 

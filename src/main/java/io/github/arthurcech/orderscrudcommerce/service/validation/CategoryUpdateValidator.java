@@ -30,7 +30,10 @@ public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpda
     }
 
     @Override
-    public boolean isValid(CategoryUpdatePayload payload, ConstraintValidatorContext context) {
+    public boolean isValid(
+            CategoryUpdatePayload payload,
+            ConstraintValidatorContext context
+    ) {
         @SuppressWarnings("unchecked")
         Map<String, String> uriVars = (Map<String, String>) request
                 .getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
@@ -42,8 +45,8 @@ public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpda
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(f.getMessage())
-                    .addPropertyNode(f.getFieldName())
+            context.buildConstraintViolationWithTemplate(f.message())
+                    .addPropertyNode(f.fieldName())
                     .addConstraintViolation();
         }
         return fieldsMessage.isEmpty();

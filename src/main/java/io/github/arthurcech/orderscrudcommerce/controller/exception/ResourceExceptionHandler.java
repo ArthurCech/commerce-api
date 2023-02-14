@@ -18,7 +18,8 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<StandardError> handleDatabaseException(
             DatabaseException e,
-            HttpServletRequest request) {
+            HttpServletRequest request
+    ) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(
                 Instant.now(),
@@ -32,7 +33,8 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationError> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e,
-            HttpServletRequest request) {
+            HttpServletRequest request
+    ) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError err = new ValidationError(
                 Instant.now(),
@@ -49,7 +51,8 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(DomainNotFoundException.class)
     public ResponseEntity<StandardError> handleDomainNotFoundException(
             DomainNotFoundException e,
-            HttpServletRequest request) {
+            HttpServletRequest request
+    ) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError err = new StandardError(
                 Instant.now(),

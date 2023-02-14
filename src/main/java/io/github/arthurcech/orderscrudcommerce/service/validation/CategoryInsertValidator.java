@@ -22,15 +22,18 @@ public class CategoryInsertValidator implements ConstraintValidator<CategoryInse
     }
 
     @Override
-    public boolean isValid(CategoryCreatePayload payload, ConstraintValidatorContext context) {
+    public boolean isValid(
+            CategoryCreatePayload payload,
+            ConstraintValidatorContext context
+    ) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         categoryRepository.findByName(payload.name()).ifPresent(category -> {
             fieldsMessage.add(new FieldMessage("name", "Category already exists"));
         });
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(f.getMessage())
-                    .addPropertyNode(f.getFieldName())
+            context.buildConstraintViolationWithTemplate(f.message())
+                    .addPropertyNode(f.fieldName())
                     .addConstraintViolation();
         }
         return fieldsMessage.isEmpty();

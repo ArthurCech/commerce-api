@@ -1,6 +1,5 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import io.github.arthurcech.orderscrudcommerce.dto.user.RegisterPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.User;
@@ -35,12 +34,6 @@ public class UserService {
     public UserResponse findById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new DomainNotFoundException("User not found"));
-        return UserMapper.INSTANCE.toUserResponse(user);
-    }
-
-    @Transactional
-    public UserResponse insert(RegisterPayload payload) {
-        User user = userRepository.save(UserMapper.INSTANCE.toUser(payload));
         return UserMapper.INSTANCE.toUserResponse(user);
     }
 

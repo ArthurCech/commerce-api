@@ -22,15 +22,18 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
     }
 
     @Override
-    public boolean isValid(RegisterPayload payload, ConstraintValidatorContext context) {
+    public boolean isValid(
+            RegisterPayload payload,
+            ConstraintValidatorContext context
+    ) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         userRepository.findByEmail(payload.email()).ifPresent(user -> {
             fieldsMessage.add(new FieldMessage("email", "User already exists"));
         });
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(f.getMessage())
-                    .addPropertyNode(f.getFieldName())
+            context.buildConstraintViolationWithTemplate(f.message())
+                    .addPropertyNode(f.fieldName())
                     .addConstraintViolation();
         }
         return fieldsMessage.isEmpty();

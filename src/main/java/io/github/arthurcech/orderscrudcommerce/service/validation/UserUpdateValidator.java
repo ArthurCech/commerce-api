@@ -30,12 +30,14 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
     }
 
     @Override
-    public boolean isValid(UserUpdatePayload payload, ConstraintValidatorContext context) {
+    public boolean isValid(
+            UserUpdatePayload payload,
+            ConstraintValidatorContext context
+    ) {
         @SuppressWarnings("unchecked")
         Map<String, String> uriVars = (Map<String, String>) request
                 .getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         long userId = Long.parseLong(uriVars.get("id"));
-
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         Optional<User> userOptional = userRepository.findByEmail(payload.email());
         if (userOptional.isPresent() && userId != userOptional.get().getId()) {
@@ -43,8 +45,8 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(f.getMessage())
-                    .addPropertyNode(f.getFieldName())
+            context.buildConstraintViolationWithTemplate(f.message())
+                    .addPropertyNode(f.fieldName())
                     .addConstraintViolation();
         }
         return fieldsMessage.isEmpty();

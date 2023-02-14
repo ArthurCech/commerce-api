@@ -1,6 +1,5 @@
 package io.github.arthurcech.orderscrudcommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,9 +24,11 @@ public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     @CreationTimestamp
     private Instant createdAt;
@@ -35,7 +36,6 @@ public class Category implements Serializable {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 

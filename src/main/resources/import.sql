@@ -15,8 +15,8 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES (3, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (4, 3);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (5, 2);
 
-INSERT INTO tb_user (name, email, phone, password, role, created_at, updated_at) VALUES ('Maria Brown', 'maria.brown@gmail.com', '988888888', '$2a$10$xmiJkeYHCAkiedabYMT5ruacEbIj.d.s2BZcSaVG47H2NyEUpiXzC', 'USER', NOW(), NOW());
-INSERT INTO tb_user (name, email, phone, password, role, created_at, updated_at) VALUES ('Alex Green', 'alex.green@gmail.com', '977777777', '$2a$10$xmiJkeYHCAkiedabYMT5ruacEbIj.d.s2BZcSaVG47H2NyEUpiXzC', 'ADMIN', NOW(), NOW());
+INSERT INTO tb_user (name, email, phone, password, role, created_at, updated_at) VALUES ('Maria Brown', 'maria.brown@gmail.com', '988888888', '$2a$10$xmiJkeYHCAkiedabYMT5ruacEbIj.d.s2BZcSaVG47H2NyEUpiXzC', 'ROLE_USER', NOW(), NOW());
+INSERT INTO tb_user (name, email, phone, password, role, created_at, updated_at) VALUES ('Alex Green', 'alex.green@gmail.com', '977777777', '$2a$10$xmiJkeYHCAkiedabYMT5ruacEbIj.d.s2BZcSaVG47H2NyEUpiXzC', 'ROLE_ADMIN', NOW(), NOW());
 
 INSERT INTO tb_order (moment, order_status, created_at, updated_at, client_id) VALUES ('2019-06-20T19:53:07Z', 2, NOW(), NOW(), 1);
 INSERT INTO tb_order (moment, order_status, created_at, updated_at, client_id) VALUES ('2019-07-21T03:42:10Z', 1, NOW(), NOW(), 2);
