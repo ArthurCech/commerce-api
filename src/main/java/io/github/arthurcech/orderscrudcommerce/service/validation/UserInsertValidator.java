@@ -1,7 +1,7 @@
 package io.github.arthurcech.orderscrudcommerce.service.validation;
 
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserCreatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.RegisterPayload;
 import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -9,7 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserCreatePayload> {
+public class UserInsertValidator implements ConstraintValidator<UserInsertValid, RegisterPayload> {
 
     private final UserRepository userRepository;
 
@@ -22,7 +22,7 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
     }
 
     @Override
-    public boolean isValid(UserCreatePayload payload, ConstraintValidatorContext context) {
+    public boolean isValid(RegisterPayload payload, ConstraintValidatorContext context) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         userRepository.findByEmail(payload.email()).ifPresent(user -> {
             fieldsMessage.add(new FieldMessage("email", "User already exists"));

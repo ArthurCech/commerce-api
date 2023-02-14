@@ -3,7 +3,7 @@ spring:
     url: jdbc:h2:mem:testdb
     username: root
     password:
-    driverClassName: org.h2.Driver
+    driver-class-name: org.h2.Driver
   h2:
     console:
       enabled: true
@@ -14,3 +14,4 @@ spring:
     properties:
       hibernate:
         format_sql: false
+    database: h2

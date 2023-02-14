@@ -1,6 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserCreatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.RegisterPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.User;
@@ -39,7 +39,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse insert(UserCreatePayload payload) {
+    public UserResponse insert(RegisterPayload payload) {
         User user = userRepository.save(UserMapper.INSTANCE.toUser(payload));
         return UserMapper.INSTANCE.toUserResponse(user);
     }

@@ -1,6 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserCreatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.RegisterPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.service.UserService;
@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> insert(@RequestBody @Valid UserCreatePayload payload) {
+    public ResponseEntity<UserResponse> insert(@RequestBody @Valid RegisterPayload payload) {
         UserResponse response = userService.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.id()).toUri();

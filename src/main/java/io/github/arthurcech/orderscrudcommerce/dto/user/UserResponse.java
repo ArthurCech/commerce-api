@@ -11,7 +11,6 @@ public record UserResponse(
         String name,
         String email,
         String phone,
-        String password,
         @JsonProperty("created_at") Instant createdAt,
         @JsonProperty("updated_at") Instant updatedAt
 ) {
