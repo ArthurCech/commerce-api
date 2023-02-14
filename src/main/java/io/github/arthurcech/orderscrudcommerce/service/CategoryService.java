@@ -8,14 +8,13 @@ import io.github.arthurcech.orderscrudcommerce.mapper.CategoryMapper;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
 import io.github.arthurcech.orderscrudcommerce.service.exception.DatabaseException;
 import io.github.arthurcech.orderscrudcommerce.service.exception.DomainNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {

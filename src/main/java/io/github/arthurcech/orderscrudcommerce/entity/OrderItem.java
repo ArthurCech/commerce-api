@@ -2,13 +2,13 @@ package io.github.arthurcech.orderscrudcommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.arthurcech.orderscrudcommerce.entity.pk.OrderItemPK;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;

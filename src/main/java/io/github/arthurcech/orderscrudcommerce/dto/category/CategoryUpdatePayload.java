@@ -1,9 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.dto.category;
 
 import io.github.arthurcech.orderscrudcommerce.service.validation.CategoryUpdateValid;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @CategoryUpdateValid
 public record CategoryUpdatePayload(

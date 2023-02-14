@@ -4,11 +4,11 @@ import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.User;
 import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.servlet.HandlerMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

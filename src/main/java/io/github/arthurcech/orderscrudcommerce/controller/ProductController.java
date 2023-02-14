@@ -3,6 +3,7 @@ package io.github.arthurcech.orderscrudcommerce.controller;
 import io.github.arthurcech.orderscrudcommerce.dto.product.ProductPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.product.ProductResponse;
 import io.github.arthurcech.orderscrudcommerce.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 @RestController

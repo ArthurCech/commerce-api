@@ -3,9 +3,9 @@ package io.github.arthurcech.orderscrudcommerce.service.validation;
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryCreatePayload;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 
