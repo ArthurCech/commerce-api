@@ -40,7 +40,7 @@ public class AuthenticationService {
         User user = UserMapper.INSTANCE.toUser(payload);
         user.setPassword(passwordEncoder.encode(payload.password()));
         user.setRole(Role.ROLE_USER);
-        user = userRepository.save(user);
+        userRepository.save(user);
         return UserMapper.INSTANCE.toAuthenticationResponse(user);
     }
 

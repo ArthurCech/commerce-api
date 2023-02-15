@@ -58,7 +58,7 @@ public class UserService {
         try {
             User user = userRepository.getReferenceById(id);
             UserMapper.INSTANCE.updateUserFromPayload(payload, user);
-            user = userRepository.save(user);
+            userRepository.save(user);
             return UserMapper.INSTANCE.toUserResponse(user);
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException(USER_NOT_FOUND);
