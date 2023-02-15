@@ -1,6 +1,5 @@
 package io.github.arthurcech.orderscrudcommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.arthurcech.orderscrudcommerce.entity.pk.OrderItemPK;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -62,8 +61,7 @@ public class OrderItem implements Serializable {
     public Double getSubTotal() {
         return price * quantity;
     }
-
-    @JsonIgnore
+    
     public Order getOrder() {
         return id.getOrder();
     }

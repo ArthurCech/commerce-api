@@ -1,6 +1,5 @@
 package io.github.arthurcech.orderscrudcommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,10 +10,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,6 +26,9 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_product")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,18 +38,18 @@ public class Product implements Serializable {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
     @Column(nullable = false)
     private String imgUrl;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     @CreationTimestamp
-    private Instant createdAt;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant createdAt;
     @UpdateTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     @ManyToMany
@@ -54,25 +60,6 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "id.product")
     private Set<OrderItem> items = new HashSet<>();
-
-    public Product() {
-    }
-
-    public Product(Long id,
-                   String name,
-                   String description,
-                   Double price,
-                   String imgUrl,
-                   Instant createdAt,
-                   Instant updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imgUrl = imgUrl;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     public Long getId() {
         return id;
@@ -98,11 +85,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -126,7 +113,6 @@ public class Product implements Serializable {
         return categories;
     }
 
-    @JsonIgnore
     public Set<Order> getOrders() {
         return items.stream()
                 .map(OrderItem::getOrder)

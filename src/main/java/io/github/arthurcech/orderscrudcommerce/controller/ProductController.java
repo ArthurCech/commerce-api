@@ -23,36 +23,30 @@ import java.net.URI;
 @RequestMapping(value = "/api/products")
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductService service;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductService service) {
+        this.service = service;
     }
 
     @GetMapping
     public Page<ProductResponse> findAll(Pageable pageable) {
-        return productService.findAll(pageable);
+        return service.findAll(pageable);
     }
 
     @GetMapping(value = "/{id}")
     public ProductResponse findById(@PathVariable Long id) {
-        return productService.findById(id);
+        return service.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<ProductResponse> insert(
             @RequestBody @Valid ProductPayload payload
     ) {
-        ProductResponse response = productService.insert(payload);
+        ProductResponse response = service.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        productService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
@@ -60,7 +54,13 @@ public class ProductController {
             @PathVariable Long id,
             @RequestBody @Valid ProductPayload payload
     ) {
-        return productService.update(id, payload);
+        return service.update(id, payload);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

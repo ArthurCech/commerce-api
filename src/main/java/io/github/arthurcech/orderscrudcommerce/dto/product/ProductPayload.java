@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.UniqueElements;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record ProductPayload(
@@ -15,11 +16,11 @@ public record ProductPayload(
         @Size(min = 2, max = 255)
         String name,
         @NotBlank
-        @Size(min = 10, max = 255)
+        @Size(min = 10)
         String description,
         @NotNull
         @Positive
-        Double price,
+        BigDecimal price,
         @NotBlank
         @JsonProperty("img_url")
         String imgUrl,

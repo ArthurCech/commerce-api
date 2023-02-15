@@ -49,11 +49,10 @@ public class ProductService {
     public ProductResponse insert(ProductPayload payload) {
         try {
             Product product = ProductMapper.INSTANCE.toProduct(payload);
-            product.getCategories().clear();
-            for (ProductCategoryPayload category : payload.categories()) {
-                product.getCategories().add(categoryRepository.getReferenceById(category.id()));
+            for (ProductCategoryPayload categoryPayload : payload.categories()) {
+                product.getCategories().add(categoryRepository.getReferenceById(categoryPayload.id()));
             }
-            product = productRepository.save(product);
+            productRepository.save(product);
             return ProductMapper.INSTANCE.toProductResponse(product);
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException(CATEGORY_NOT_FOUND);
