@@ -40,7 +40,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> insert(@RequestBody @Valid ProductPayload payload) {
+    public ResponseEntity<ProductResponse> insert(
+            @RequestBody @Valid ProductPayload payload
+    ) {
         ProductResponse response = productService.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(response.id()).toUri();
@@ -54,8 +56,10 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    public ProductResponse update(@PathVariable Long id,
-                                  @RequestBody @Valid ProductPayload payload) {
+    public ProductResponse update(
+            @PathVariable Long id,
+            @RequestBody @Valid ProductPayload payload
+    ) {
         return productService.update(id, payload);
     }
 

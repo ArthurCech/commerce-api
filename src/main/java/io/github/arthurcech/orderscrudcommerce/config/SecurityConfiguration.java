@@ -33,14 +33,15 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/authenticate").permitAll();
-                    auth.requestMatchers("/api/auth/register").permitAll();
                     auth.requestMatchers(toH2Console()).permitAll();
+                    auth.requestMatchers("/api/auth/register").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/reset-password").hasAnyRole("ADMIN", "USER");
                     auth.requestMatchers("/api/users/profile").hasAnyRole("USER", "ADMIN");
                     auth.requestMatchers(USERS).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.POST, new String[]{CATEGORIES}).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, new String[]{CATEGORIES}).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, new String[]{CATEGORIES}).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.POST, new String[]{CATEGORIES, ORDERS}).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, new String[]{CATEGORIES, ORDERS}).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, new String[]{CATEGORIES, ORDERS}).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.GET, new String[]{ORDERS}).hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .headers(headers -> headers.frameOptions().sameOrigin())

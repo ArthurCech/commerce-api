@@ -11,20 +11,20 @@ import org.hibernate.validator.constraints.UniqueElements;
 import java.util.List;
 
 public record ProductPayload(
-        @NotBlank(message = "Required field")
-        @Size(min = 2, max = 255, message = "The field must have a minimum of 2 and a maximum of 255 characters")
+        @NotBlank
+        @Size(min = 2, max = 255)
         String name,
-        @NotBlank(message = "Required field")
-        @Size(min = 10, max = 255, message = "The field must have a minimum of 10 and a maximum of 255 characters")
+        @NotBlank
+        @Size(min = 10, max = 255)
         String description,
-        @NotNull(message = "Required field")
-        @Positive(message = "The field should be a positive value")
+        @NotNull
+        @Positive
         Double price,
-        @NotBlank(message = "Required field")
+        @NotBlank
         @JsonProperty("img_url")
         String imgUrl,
-        @NotNull(message = "Required field")
-        @Size(min = 1, message = "The field should has at least 1 category")
+        @NotNull
+        @Size(min = 1)
         @Valid
         @UniqueElements
         List<ProductCategoryPayload> categories

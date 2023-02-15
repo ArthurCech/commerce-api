@@ -66,22 +66,6 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-    public Order(Long id,
-                 Instant moment,
-                 Integer orderStatus,
-                 Instant createdAt,
-                 Instant updatedAt,
-                 Client client,
-                 Payment payment) {
-        this.id = id;
-        this.moment = moment;
-        this.orderStatus = orderStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.client = client;
-        this.payment = payment;
-    }
-
     public Double getTotal() {
         double sum = 0.0;
         for (OrderItem item : items) {
