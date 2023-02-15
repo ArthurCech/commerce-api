@@ -1,13 +1,12 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import io.github.arthurcech.orderscrudcommerce.dto.order.CreateOrderPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.order.OrderPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.order.OrderResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.order.PaymentPayload;
 import io.github.arthurcech.orderscrudcommerce.entity.Client;
 import io.github.arthurcech.orderscrudcommerce.entity.Order;
 import io.github.arthurcech.orderscrudcommerce.entity.OrderItem;
 import io.github.arthurcech.orderscrudcommerce.entity.Product;
-import io.github.arthurcech.orderscrudcommerce.entity.enums.OrderStatus;
 import io.github.arthurcech.orderscrudcommerce.mapper.OrderMapper;
 import io.github.arthurcech.orderscrudcommerce.repository.ClientRepository;
 import io.github.arthurcech.orderscrudcommerce.repository.OrderItemRepository;
@@ -19,7 +18,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 
 import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.CLIENT_NOT_FOUND;
@@ -58,19 +56,18 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse insert(CreateOrderPayload payload) {
+    public OrderResponse insert(OrderPayload payload) {
         try {
-            final Order order = createOrder(payload.clientId(), payload.moment(), payload.orderStatus());
+            Order order = createOrder(payload);
             payload.items().forEach(item -> {
                 Product product = productRepository.getReferenceById(item.productId());
                 OrderItem orderItem = new OrderItem(
                         order,
                         product,
                         item.quantity(),
-                        item.price(),
-                        null,
-                        null);
-                orderItem = orderItemRepository.save(orderItem);
+                        item.price()
+                );
+                orderItemRepository.save(orderItem);
                 order.getItems().add(orderItem);
             });
             return OrderMapper.INSTANCE.toOrderResponse(order);
@@ -79,13 +76,14 @@ public class OrderService {
         }
     }
 
-    private Order createOrder(Long clientId, Instant moment, OrderStatus status) {
+    @Transactional
+    protected Order createOrder(OrderPayload payload) {
         try {
-            Client client = clientRepository.getReferenceById(clientId);
+            Client client = clientRepository.getReferenceById(payload.clientId());
             Order order = new Order();
-            order.setMoment(moment);
+            order.setMoment(payload.moment());
             order.setClient(client);
-            order.setOrderStatus(status);
+            order.setOrderStatus(payload.orderStatus());
             return orderRepository.save(order);
         } catch (DataAccessException e) {
             throw new DomainNotFoundException(CLIENT_NOT_FOUND);
@@ -102,6 +100,21 @@ public class OrderService {
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException(ORDER_NOT_FOUND);
         }
+    }
+
+    @Transactional
+    public OrderResponse update(Long id, OrderPayload payload) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new DomainNotFoundException(ORDER_NOT_FOUND));
+        if (!order.getClient().getId().equals(payload.clientId())) {
+            Client client = clientRepository.findById(payload.clientId())
+                    .orElseThrow(() -> new DomainNotFoundException(CLIENT_NOT_FOUND));
+            order.setClient(client);
+        }
+        order.setMoment(payload.moment());
+        order.setOrderStatus(payload.orderStatus());
+        orderRepository.save(order);
+        return OrderMapper.INSTANCE.toOrderResponse(order);
     }
 
 }

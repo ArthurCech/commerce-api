@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 import java.time.Instant;
 import java.util.List;
 
-public record CreateOrderPayload(
+public record OrderPayload(
         Instant moment,
         @JsonProperty("status")
         @NotNull

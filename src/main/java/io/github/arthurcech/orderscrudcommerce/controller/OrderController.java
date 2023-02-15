@@ -1,6 +1,6 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import io.github.arthurcech.orderscrudcommerce.dto.order.CreateOrderPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.order.OrderPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.order.OrderResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.order.PaymentPayload;
 import io.github.arthurcech.orderscrudcommerce.service.OrderService;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +41,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponse> insert(
-            @RequestBody @Valid CreateOrderPayload payload
+            @RequestBody @Valid OrderPayload payload
     ) {
         OrderResponse response = service.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -48,7 +49,16 @@ public class OrderController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    @PatchMapping("/{id}/payment")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<OrderResponse> update(
+            @PathVariable Long id,
+            @RequestBody @Valid OrderPayload payload
+    ) {
+        OrderResponse response = service.update(id, payload);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping(value = "/{id}/payment")
     public ResponseEntity<OrderResponse> payment(
             @PathVariable Long id,
             @RequestBody @Valid PaymentPayload payload
