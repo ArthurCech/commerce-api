@@ -7,6 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,13 +21,15 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_client")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
     private Long id;
     @Column(nullable = false)
     private String name;
@@ -33,32 +38,15 @@ public class Client implements Serializable {
     @Column(nullable = false)
     private String phone;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     @CreationTimestamp
-    private Instant createdAt;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant createdAt;
     @UpdateTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "client")
     private Set<Order> orders = new HashSet<>();
-
-    public Client() {
-    }
-
-    public Client(Long id,
-                  String name,
-                  String email,
-                  String phone,
-                  Instant createdAt,
-                  Instant updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     public Long getId() {
         return id;

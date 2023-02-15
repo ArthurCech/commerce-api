@@ -19,32 +19,32 @@ import static io.github.arthurcech.orderscrudcommerce.service.constant.Exception
 @Service
 public class ClientService {
 
-    private final ClientRepository clientRepository;
+    private final ClientRepository repository;
 
-    public ClientService(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public ClientService(ClientRepository repository) {
+        this.repository = repository;
     }
 
     @Transactional(readOnly = true)
     public ClientResponse findById(Long id) {
-        Client client = clientRepository.findById(id)
+        Client client = repository.findById(id)
                 .orElseThrow(() -> new DomainNotFoundException(CLIENT_NOT_FOUND));
         return ClientMapper.INSTANCE.toClientResponse(client);
     }
 
     @Transactional
     public ClientResponse insert(RegisterClientPayload payload) {
-        Client client = clientRepository.save(ClientMapper.INSTANCE.toClient(payload));
+        Client client = ClientMapper.INSTANCE.toClient(payload);
+        repository.save(client);
         return ClientMapper.INSTANCE.toClientResponse(client);
     }
 
     @Transactional
     public ClientResponse update(Long id, UpdateClientPayload payload) {
         try {
-
-            Client client = clientRepository.getReferenceById(id);
+            Client client = repository.getReferenceById(id);
             ClientMapper.INSTANCE.updateClientFromPayload(payload, client);
-            client = clientRepository.save(client);
+            repository.save(client);
             return ClientMapper.INSTANCE.toClientResponse(client);
         } catch (EntityNotFoundException e) {
             throw new DomainNotFoundException(CLIENT_NOT_FOUND);
@@ -53,7 +53,7 @@ public class ClientService {
 
     public void delete(Long id) {
         try {
-            clientRepository.deleteById(id);
+            repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new DomainNotFoundException(CLIENT_NOT_FOUND);
         } catch (DataIntegrityViolationException e) {

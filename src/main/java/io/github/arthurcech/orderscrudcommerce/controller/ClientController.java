@@ -22,40 +22,40 @@ import java.net.URI;
 @RequestMapping(value = "/api/clients")
 public class ClientController {
 
-    private final ClientService clientService;
+    private final ClientService service;
 
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
+    public ClientController(ClientService service) {
+        this.service = service;
     }
 
     @GetMapping(value = "/{id}")
     public ClientResponse findById(@PathVariable Long id) {
-        return clientService.findById(id);
+        return service.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<ClientResponse> insert(
             @RequestBody @Valid RegisterClientPayload payload
     ) {
-        ClientResponse response = clientService.insert(payload);
+        ClientResponse response = service.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}")
     public ClientResponse update(
             @PathVariable Long id,
             @RequestBody @Valid UpdateClientPayload payload
     ) {
-        return clientService.update(id, payload);
+        return service.update(id, payload);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(
             @PathVariable Long id
     ) {
-        clientService.delete(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
