@@ -7,6 +7,8 @@ public class ExceptionMessages {
     public static final String PRODUCT_NOT_FOUND = "Product not found";
     public static final String ORDER_NOT_FOUND = "Order not found";
     public static final String USER_NOT_FOUND = "User not found";
+    public static final String USER_ALREADY_EXISTS = "User already exists";
     public static final String CLIENT_NOT_FOUND = "Client not found";
+    public static final String CLIENT_ALREADY_EXISTS = "Client already exists";
 
 }

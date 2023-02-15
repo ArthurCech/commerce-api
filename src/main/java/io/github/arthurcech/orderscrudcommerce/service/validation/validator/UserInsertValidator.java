@@ -10,6 +10,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.USER_ALREADY_EXISTS;
+
 public class UserInsertValidator implements ConstraintValidator<UserInsertValid, RegisterPayload> {
 
     private final UserRepository userRepository;
@@ -28,9 +30,8 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
             ConstraintValidatorContext context
     ) {
         List<FieldMessage> fieldsMessage = new ArrayList<>();
-        userRepository.findByEmail(payload.email()).ifPresent(user -> {
-            fieldsMessage.add(new FieldMessage("email", "User already exists"));
-        });
+        userRepository.findByEmail(payload.email()).ifPresent(user -> fieldsMessage
+                .add(new FieldMessage("email", USER_ALREADY_EXISTS)));
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(f.message())

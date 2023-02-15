@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.USER_ALREADY_EXISTS;
+
 public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid, UpdateUserPayload> {
 
     private final HttpServletRequest request;
@@ -42,7 +44,7 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         Optional<User> userOptional = userRepository.findByEmail(payload.email());
         if (userOptional.isPresent() && userId != userOptional.get().getId()) {
-            fieldsMessage.add(new FieldMessage("email", "User already exists"));
+            fieldsMessage.add(new FieldMessage("email", USER_ALREADY_EXISTS));
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();

@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/authenticate").permitAll();
+                    auth.requestMatchers("/api/auth/register").permitAll();
                     auth.requestMatchers(toH2Console()).permitAll();
-                    auth.requestMatchers("/api/auth/register").hasRole("ADMIN");
                     auth.requestMatchers("/api/auth/reset-password").hasAnyRole("ADMIN", "USER");
                     auth.requestMatchers("/api/users/profile").hasAnyRole("USER", "ADMIN");
                     auth.requestMatchers(USERS).hasRole("ADMIN");
