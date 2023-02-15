@@ -2,6 +2,7 @@ package io.github.arthurcech.orderscrudcommerce.service;
 
 import io.github.arthurcech.orderscrudcommerce.dto.order.CreateOrderPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.order.OrderResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.order.PaymentPayload;
 import io.github.arthurcech.orderscrudcommerce.entity.Client;
 import io.github.arthurcech.orderscrudcommerce.entity.Order;
 import io.github.arthurcech.orderscrudcommerce.entity.OrderItem;
@@ -88,6 +89,18 @@ public class OrderService {
             return orderRepository.save(order);
         } catch (DataAccessException e) {
             throw new DomainNotFoundException(CLIENT_NOT_FOUND);
+        }
+    }
+
+    @Transactional
+    public OrderResponse payment(Long id, PaymentPayload payload) {
+        try {
+            Order order = orderRepository.getReferenceById(id);
+            order.setOrderStatus(payload.orderStatus());
+            order = orderRepository.save(order);
+            return OrderMapper.INSTANCE.toOrderResponse(order);
+        } catch (EntityNotFoundException e) {
+            throw new DomainNotFoundException(ORDER_NOT_FOUND);
         }
     }
 

@@ -2,10 +2,12 @@ package io.github.arthurcech.orderscrudcommerce.controller;
 
 import io.github.arthurcech.orderscrudcommerce.dto.order.CreateOrderPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.order.OrderResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.order.PaymentPayload;
 import io.github.arthurcech.orderscrudcommerce.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,15 @@ public class OrderController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
+    }
+
+    @PatchMapping("/{id}/payment")
+    public ResponseEntity<OrderResponse> payment(
+            @PathVariable Long id,
+            @RequestBody @Valid PaymentPayload payload
+    ) {
+        OrderResponse response = service.payment(id, payload);
+        return ResponseEntity.ok(response);
     }
 
 }
