@@ -1,7 +1,7 @@
 package io.github.arthurcech.orderscrudcommerce.service.validation.validator;
 
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryUpdatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.UpdateCategoryPayload;
 import io.github.arthurcech.orderscrudcommerce.entity.Category;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
 import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.CategoryUpdateValid;
@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpdateValid, CategoryUpdatePayload> {
+import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.CATEGORY_ALREADY_EXISTS;
+
+public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpdateValid, UpdateCategoryPayload> {
 
     private final HttpServletRequest request;
     private final CategoryRepository categoryRepository;
@@ -32,7 +34,7 @@ public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpda
 
     @Override
     public boolean isValid(
-            CategoryUpdatePayload payload,
+            UpdateCategoryPayload payload,
             ConstraintValidatorContext context
     ) {
         @SuppressWarnings("unchecked")
@@ -42,7 +44,7 @@ public class CategoryUpdateValidator implements ConstraintValidator<CategoryUpda
         List<FieldMessage> fieldsMessage = new ArrayList<>();
         Optional<Category> categoryOptional = categoryRepository.findByName(payload.name());
         if (categoryOptional.isPresent() && categoryId != categoryOptional.get().getId()) {
-            fieldsMessage.add(new FieldMessage("name", "Category already exists"));
+            fieldsMessage.add(new FieldMessage("name", CATEGORY_ALREADY_EXISTS));
         }
         for (FieldMessage f : fieldsMessage) {
             context.disableDefaultConstraintViolation();

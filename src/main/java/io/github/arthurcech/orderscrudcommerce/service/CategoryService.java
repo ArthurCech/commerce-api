@@ -1,8 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryCreatePayload;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryUpdatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CreateCategoryPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.UpdateCategoryPayload;
 import io.github.arthurcech.orderscrudcommerce.entity.Category;
 import io.github.arthurcech.orderscrudcommerce.mapper.CategoryMapper;
 import io.github.arthurcech.orderscrudcommerce.repository.CategoryRepository;
@@ -11,10 +11,10 @@ import io.github.arthurcech.orderscrudcommerce.service.exception.DomainNotFoundE
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static io.github.arthurcech.orderscrudcommerce.service.constant.ExceptionMessages.CATEGORY_NOT_FOUND;
 
@@ -28,9 +28,11 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CategoryResponse> findAll(Pageable pageable) {
-        Page<Category> categories = categoryRepository.findAll(pageable);
-        return categories.map(CategoryMapper.INSTANCE::toCategoryResponse);
+    public List<CategoryResponse> findAll() {
+        List<Category> list = categoryRepository.findAll();
+        return list.stream()
+                .map(CategoryMapper.INSTANCE::toCategoryResponse)
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -41,14 +43,14 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryResponse insert(CategoryCreatePayload payload) {
+    public CategoryResponse insert(CreateCategoryPayload payload) {
         Category category = CategoryMapper.INSTANCE.toCategory(payload);
         category = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.toCategoryResponse(category);
     }
 
     @Transactional
-    public CategoryResponse update(Long id, CategoryUpdatePayload payload) {
+    public CategoryResponse update(Long id, UpdateCategoryPayload payload) {
         try {
             Category category = categoryRepository.getReferenceById(id);
             CategoryMapper.INSTANCE.updateCategoryFromPayload(payload, category);

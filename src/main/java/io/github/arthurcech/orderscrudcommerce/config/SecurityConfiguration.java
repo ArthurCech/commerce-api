@@ -22,6 +22,11 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final String[] PROTECTED = {"/api/categories/**", "/api/products/**", "/api/users/**"};
     private final String[] ONLY_ADMIN = {"/api/clients/**"};
+    private final String CATEGORY = "/api/categories/**";
+    private final String PRODUCTS = "/api/products/**";
+    private final String CLIENTS = "/api/clients/**";
+    private final String USERS = "/api/users/**";
+    private final String ORDERS = "/api/orders/**";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,6 +35,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers(toH2Console()).permitAll();
+                    auth.requestMatchers(HttpMethod.POST, CATEGORY).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, CATEGORY).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, CATEGORY).hasRole("ADMIN");
                     auth.requestMatchers(HttpMethod.POST, PROTECTED).hasRole("ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, PROTECTED).hasRole("ADMIN");
                     auth.requestMatchers(HttpMethod.PUT, PROTECTED).hasRole("ADMIN");

@@ -1,12 +1,10 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryCreatePayload;
 import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryResponse;
-import io.github.arthurcech.orderscrudcommerce.dto.category.CategoryUpdatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.CreateCategoryPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.category.UpdateCategoryPayload;
 import io.github.arthurcech.orderscrudcommerce.service.CategoryService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/categories")
@@ -31,8 +30,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Page<CategoryResponse> findAll(Pageable pageable) {
-        return categoryService.findAll(pageable);
+    public List<CategoryResponse> findAll() {
+        return categoryService.findAll();
     }
 
     @GetMapping(value = "/{id}")
@@ -41,7 +40,9 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> insert(@RequestBody @Valid CategoryCreatePayload payload) {
+    public ResponseEntity<CategoryResponse> insert(
+            @RequestBody @Valid CreateCategoryPayload payload
+    ) {
         CategoryResponse response = categoryService.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.id()).toUri();
@@ -55,8 +56,10 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/{id}")
-    public CategoryResponse update(@PathVariable Long id,
-                                   @RequestBody @Valid CategoryUpdatePayload payload) {
+    public CategoryResponse update(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateCategoryPayload payload
+    ) {
         return categoryService.update(id, payload);
     }
 
