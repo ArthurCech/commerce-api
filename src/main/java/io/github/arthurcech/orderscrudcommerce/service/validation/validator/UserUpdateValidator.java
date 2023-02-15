@@ -1,7 +1,7 @@
 package io.github.arthurcech.orderscrudcommerce.service.validation.validator;
 
 import io.github.arthurcech.orderscrudcommerce.controller.exception.FieldMessage;
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UpdateUserPayload;
 import io.github.arthurcech.orderscrudcommerce.entity.User;
 import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
 import io.github.arthurcech.orderscrudcommerce.service.validation.annotation.UserUpdateValid;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid, UserUpdatePayload> {
+public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid, UpdateUserPayload> {
 
     private final HttpServletRequest request;
     private final UserRepository userRepository;
@@ -32,7 +32,7 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 
     @Override
     public boolean isValid(
-            UserUpdatePayload payload,
+            UpdateUserPayload payload,
             ConstraintValidatorContext context
     ) {
         @SuppressWarnings("unchecked")

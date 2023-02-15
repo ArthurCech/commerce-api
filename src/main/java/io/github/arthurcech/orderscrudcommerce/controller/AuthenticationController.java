@@ -3,6 +3,7 @@ package io.github.arthurcech.orderscrudcommerce.controller;
 import io.github.arthurcech.orderscrudcommerce.dto.auth.AuthenticationPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.auth.AuthenticationResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.user.RegisterPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.ResetPasswordPayload;
 import io.github.arthurcech.orderscrudcommerce.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,9 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody @Valid RegisterPayload payload
     ) {
-        Map<String, Object> map = authenticationService.register(payload);
-        HttpHeaders headers = (HttpHeaders) map.get("accessToken");
-        AuthenticationResponse response = (AuthenticationResponse) map.get("user");
+        AuthenticationResponse response = authenticationService.register(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.created(uri).headers(headers).body(response);
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PostMapping("/authenticate")
@@ -43,6 +42,14 @@ public class AuthenticationController {
         HttpHeaders headers = (HttpHeaders) map.get("accessToken");
         AuthenticationResponse response = (AuthenticationResponse) map.get("user");
         return ResponseEntity.ok().headers(headers).body(response);
+    }
+
+    @PostMapping(value = "/reset-password")
+    public ResponseEntity<Void> resetPassword(
+            @RequestBody @Valid ResetPasswordPayload payload
+    ) {
+        authenticationService.resetPassword(payload);
+        return ResponseEntity.noContent().build();
     }
 
 }

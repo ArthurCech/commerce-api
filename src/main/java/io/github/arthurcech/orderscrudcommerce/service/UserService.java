@@ -1,7 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.service;
 
+import io.github.arthurcech.orderscrudcommerce.dto.auth.AuthenticationResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UpdateUserPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.User;
 import io.github.arthurcech.orderscrudcommerce.mapper.UserMapper;
 import io.github.arthurcech.orderscrudcommerce.repository.UserRepository;
@@ -12,6 +13,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +43,18 @@ public class UserService {
         return UserMapper.INSTANCE.toUserResponse(user);
     }
 
+    @Transactional(readOnly = true)
+    public AuthenticationResponse profile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String userEmail = userDetails.getUsername();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new DomainNotFoundException(USER_NOT_FOUND));
+        return UserMapper.INSTANCE.toAuthenticationResponse(user);
+    }
+
     @Transactional
-    public UserResponse update(Long id, UserUpdatePayload payload) {
+    public UserResponse update(Long id, UpdateUserPayload payload) {
         try {
             User user = userRepository.getReferenceById(id);
             UserMapper.INSTANCE.updateUserFromPayload(payload, user);

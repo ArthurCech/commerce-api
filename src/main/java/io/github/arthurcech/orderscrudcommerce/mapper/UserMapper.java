@@ -2,8 +2,8 @@ package io.github.arthurcech.orderscrudcommerce.mapper;
 
 import io.github.arthurcech.orderscrudcommerce.dto.auth.AuthenticationResponse;
 import io.github.arthurcech.orderscrudcommerce.dto.user.RegisterPayload;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UpdateUserPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -20,6 +20,9 @@ public interface UserMapper {
 
     AuthenticationResponse toAuthenticationResponse(User user);
 
-    void updateUserFromPayload(UserUpdatePayload payload, @MappingTarget User user);
+    void updateUserFromPayload(
+            UpdateUserPayload payload,
+            @MappingTarget User user
+    );
 
 }

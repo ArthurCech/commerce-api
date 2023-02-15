@@ -1,7 +1,8 @@
 package io.github.arthurcech.orderscrudcommerce.controller;
 
+import io.github.arthurcech.orderscrudcommerce.dto.auth.AuthenticationResponse;
+import io.github.arthurcech.orderscrudcommerce.dto.user.UpdateUserPayload;
 import io.github.arthurcech.orderscrudcommerce.dto.user.UserResponse;
-import io.github.arthurcech.orderscrudcommerce.dto.user.UserUpdatePayload;
 import io.github.arthurcech.orderscrudcommerce.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,11 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @GetMapping(value = "/profile")
+    public AuthenticationResponse profile() {
+        return userService.profile();
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
@@ -44,7 +50,7 @@ public class UserController {
     @PutMapping(value = "/{id}")
     public UserResponse update(
             @PathVariable Long id,
-            @RequestBody @Valid UserUpdatePayload payload
+            @RequestBody @Valid UpdateUserPayload payload
     ) {
         return userService.update(id, payload);
     }

@@ -20,9 +20,8 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final String[] PROTECTED = {"/api/categories/**", "/api/products/**", "/api/users/**"};
-    private final String[] ONLY_ADMIN = {"/api/clients/**"};
-    private final String CATEGORY = "/api/categories/**";
+
+    private final String CATEGORIES = "/api/categories/**";
     private final String PRODUCTS = "/api/products/**";
     private final String CLIENTS = "/api/clients/**";
     private final String USERS = "/api/users/**";
@@ -33,15 +32,15 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**").permitAll();
+                    auth.requestMatchers("/api/auth/authenticate").permitAll();
                     auth.requestMatchers(toH2Console()).permitAll();
-                    auth.requestMatchers(HttpMethod.POST, CATEGORY).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, CATEGORY).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, CATEGORY).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.POST, PROTECTED).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, PROTECTED).hasRole("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, PROTECTED).hasRole("ADMIN");
-                    auth.requestMatchers(ONLY_ADMIN).hasRole("ADMIN");
+                    auth.requestMatchers("/api/auth/register").hasRole("ADMIN");
+                    auth.requestMatchers("/api/auth/reset-password").hasAnyRole("ADMIN", "USER");
+                    auth.requestMatchers("/api/users/profile").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers(USERS).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.POST, new String[]{CATEGORIES}).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, new String[]{CATEGORIES}).hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, new String[]{CATEGORIES}).hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .headers(headers -> headers.frameOptions().sameOrigin())
