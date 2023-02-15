@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 @CategoryUpdateValid
 public record UpdateCategoryPayload(
         @NotBlank
-        @Size(min = 2, max = 255)
+        @Size(min = 2, max = 100)
         String name
 ) {
 }

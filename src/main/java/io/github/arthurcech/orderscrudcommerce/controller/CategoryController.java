@@ -23,27 +23,27 @@ import java.util.List;
 @RequestMapping(value = "/api/categories")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final CategoryService service;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryController(CategoryService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<CategoryResponse> findAll() {
-        return categoryService.findAll();
+        return service.findAll();
     }
 
     @GetMapping(value = "/{id}")
     public CategoryResponse findById(@PathVariable Long id) {
-        return categoryService.findById(id);
+        return service.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<CategoryResponse> insert(
             @RequestBody @Valid CreateCategoryPayload payload
     ) {
-        CategoryResponse response = categoryService.insert(payload);
+        CategoryResponse response = service.insert(payload);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
@@ -51,7 +51,7 @@ public class CategoryController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        categoryService.delete(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -60,7 +60,7 @@ public class CategoryController {
             @PathVariable Long id,
             @RequestBody @Valid UpdateCategoryPayload payload
     ) {
-        return categoryService.update(id, payload);
+        return service.update(id, payload);
     }
 
 }
